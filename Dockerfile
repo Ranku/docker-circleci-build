@@ -1,5 +1,11 @@
 FROM alpine:3.6
 
+# Install CircleCI Dependencies
+# See: https://circleci.com/docs/2.0/custom-images/#adding-required-and-custom-tools-or-files
+RUN apk --update add git openssh openssl tar gzip && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /var/cache/apk/*
+
 # Install glibc on Alpine (required by docker-compose) from
 # https://github.com/sgerrand/alpine-pkg-glibc
 # See also https://github.com/gliderlabs/docker-alpine/issues/11
@@ -25,10 +31,10 @@ RUN set -x && \
     docker-compose version && \
     apk del .deps
 
-# Install Core Utilities
-RUN apk add --no-cache bash gawk sed grep bc coreutils git openssl
+# Install Bash
+RUN apk add --no-cache bash gawk sed grep bc coreutils
+# Install AWSCLI
 RUN apk add --no-cache py-pip && pip install --no-cache-dir awscli 
-
 # Install Dockerize
 ENV DOCKERIZE_VERSION v0.5.0
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \

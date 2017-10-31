@@ -28,4 +28,5 @@ RUN set -x && \
     # Clean-up
     apk del .deps
 
-RUN apk add --no-cache bash gawk sed grep bc coreutils py-pip && pip install awscli
+RUN apk add --no-cache bash gawk sed grep bc coreutils
+RUN apk add --no-cache py-pip && pip install --no-cache-dir awscli 

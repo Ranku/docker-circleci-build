@@ -13,7 +13,6 @@ RUN set -x && \
     apk add glibc.apk glibc-bin.apk && \
     rm -rf /var/cache/apk/* && \
     rm glibc.apk glibc-bin.apk && \
-    \
     # Clean-up
     apk del .deps
 
@@ -24,11 +23,9 @@ RUN set -x && \
     DOCKER_COMPOSE_URL=https://github.com$(curl -L https://github.com/docker/compose/releases/latest | grep -Eo 'href="[^"]+docker-compose-Linux-x86_64' | sed 's/^href="//') && \
     curl -Lo /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
     chmod a+rx /usr/local/bin/docker-compose && \
-    \
     # Basic check it works
     docker-compose version && \
-    \
     # Clean-up
     apk del .deps
 
-RUN apk add --no-cache bash gawk sed grep bc coreutils py-pip && pip install awscli && apk del .deps
+RUN apk add --no-cache bash gawk sed grep bc coreutils py-pip && pip install awscli

@@ -91,6 +91,8 @@ RUN set -x && \
     docker-compose version && \
     apk del .deps
 
+# Install Build Essentials
+RUN apk add --no-cache gcc make g++ zlib-dev
 # Install Bash
 RUN apk add --no-cache bash gawk sed grep bc coreutils
 # Install AWSCLI

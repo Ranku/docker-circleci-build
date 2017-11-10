@@ -2,7 +2,7 @@ FROM node:8.9.1-alpine
 
 # Install CircleCI Dependencies
 # See: https://circleci.com/docs/2.0/custom-images/#adding-required-and-custom-tools-or-files
-RUN apk --update add git openssh openssl tar gzip make gcc g++ && \
+RUN apk --update add git openssh openssl tar gzip make g++ && \
     rm -rf /var/lib/apt/lists/* && \
     rm /var/cache/apk/*
 

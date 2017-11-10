@@ -2,7 +2,7 @@ FROM node:8.9.1-alpine
 
 # Install CircleCI Dependencies
 # See: https://circleci.com/docs/2.0/custom-images/#adding-required-and-custom-tools-or-files
-RUN apk --update add git openssh openssl tar gzip && \
+RUN apk --update add git openssh openssl tar gzip make gcc g++ && \
     rm -rf /var/lib/apt/lists/* && \
     rm /var/cache/apk/*
 
@@ -46,8 +46,6 @@ RUN set -x && \
     docker-compose version && \
     apk del .deps
 
-# Install Build Essentials
-RUN apk add --no-cache gcc make g++ zlib-dev
 # Install Bash
 RUN apk add --no-cache bash gawk sed grep bc coreutils
 # Install AWSCLI

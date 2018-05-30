@@ -1,8 +1,8 @@
-FROM node:8.9.1-alpine
+FROM node:8.11.2-alpine
 
 # Install CircleCI Dependencies
 # See: https://circleci.com/docs/2.0/custom-images/#adding-required-and-custom-tools-or-files
-RUN apk --update add git openssh openssl tar gzip make g++ && \
+RUN apk --update add git openssh openssl tar gzip && \
     rm -rf /var/lib/apt/lists/* && \
     rm /var/cache/apk/*
 
@@ -40,13 +40,13 @@ RUN set -ex \
 # https://docs.docker.com/compose/install/
 RUN set -x && \
     apk add --no-cache -t .deps ca-certificates curl && \
-    DOCKER_COMPOSE_URL=https://github.com$(curl -L https://github.com/docker/compose/releases/latest | grep -Eo 'href="[^"]+docker-compose-Linux-x86_64' | sed 's/^href="//') && \
-    curl -Lo /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
+    DOCKER_COMPOSE_URL=https://github.com$(curl -L https://github.com/docker/compose/releases/latest | grep -Eo 'href="[^"]+docker-compose-Linux-x86_64' | head -1 | sed 's/^href="//') && \
+    curl -L $DOCKER_COMPOSE_URL -o /usr/local/bin/docker-compose  && \
     chmod a+rx /usr/local/bin/docker-compose && \
     docker-compose version && \
     apk del .deps
 
-# Install Bash
+# Install bash & other utilities
 RUN apk add --no-cache bash gawk sed grep bc coreutils
 # Install AWSCLI
 RUN apk add --no-cache py-pip && pip install --no-cache-dir awscli
@@ -55,3 +55,5 @@ ENV DOCKERIZE_VERSION v0.5.0
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+# Install HerokuCLI
+RUN npm install -g heroku-cli
